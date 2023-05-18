@@ -5,7 +5,7 @@ import type {
   AdapterSession,
   VerificationToken as AdapterVerificationToken,
 } from "next-auth/adapters";
-import type {Account as AdapterAccount} from "next-auth";
+import type {Account as AdapterAccount, Awaitable} from "next-auth";
 
 interface MongooseAdapterModels {
   user?: Model<AdapterUser>;
@@ -103,13 +103,13 @@ const MongooseAdapter = (
       const user = await User.findByIdAndDelete(userId);
       return user;
     },
-    async linkAccount(data): Promise<AdapterAccount | null> {
+    async linkAccount(data): Awaitable<AdapterAccount> {
       console.log("linkAccount: ", data);
 
       await dbConnect;
       const account = await Account.create(data);
       // make account object into type Promise<AdapterAccount>
-      return account as unknown as Promise<AdapterAccount>;
+      return account as Awaitable<AdapterAccount>;
     },
     async unlinkAccount(data) {
       console.log("unlinkAccount: ", data);
