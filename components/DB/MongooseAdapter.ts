@@ -81,7 +81,7 @@ const MongooseAdapter = (
       if (!account) return null;
 
       // Find User
-      const user = await adaptorMethods.getUser(account.userId);
+      const user = await adaptorMethods.getUser(account.userId as string);
       return user;
     },
     async updateUser(data) {
@@ -103,15 +103,14 @@ const MongooseAdapter = (
       const user = await User.findByIdAndDelete(userId);
       return user;
     },
-    async linkAccount(data): Awaitable<AdapterAccount> {
-      console.log("linkAccount: ", data);
+    async linkAccount(account: AdapterAccount): Promise<any> { /** @TODO fix type... maybe */
+      console.log("linkAccount: ", account);
 
       await dbConnect;
-      const account = await Account.create(data);
-      // make account object into type Promise<AdapterAccount>
-      return account as Awaitable<AdapterAccount>;
+      const newAcc = await Account.create(account);
+      return newAcc;
     },
-    async unlinkAccount(data) {
+    async unlinkAccount(data): Promise<any> {
       console.log("unlinkAccount: ", data);
       const {providerAccountId, provider} = data;
       await dbConnect;
@@ -145,9 +144,9 @@ const MongooseAdapter = (
     },
     async updateSession(data) {
       console.log("updateSession: ", data);
-      const {id, ...restData} = data;
+      const {userId, ...restData} = data;
       await dbConnect;
-      const session = await Session.findByIdAndUpdate(id, restData, {
+      const session = await Session.findByIdAndUpdate(userId, restData, {
         new: true,
         runValidators: true,
       });
