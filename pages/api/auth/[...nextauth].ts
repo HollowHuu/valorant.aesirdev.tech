@@ -1,8 +1,11 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
+// import GoogleProvider from 'next-auth/providers/google'
 import DiscordProvider from 'next-auth/providers/discord'
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import clientPromise from '@/lib/mongodb';
 
 export const authOptions: NextAuthOptions = {
+    adapter: MongoDBAdapter(clientPromise),
     providers: [
         DiscordProvider({
             clientId: process.env.DISCORD_CLIENT_ID as string,
@@ -11,15 +14,10 @@ export const authOptions: NextAuthOptions = {
         // Implement Google auth
     ],
     theme: {
-        colorScheme: 'dark',
+        colorScheme: 'auto',
     },
-    callbacks: {
-         // Add JWT to session
-         async jwt({ token}) {
-            token.userrole = 'admin';
-            return token;
-         }
-    }
+    secret: process.env.NEXTAUTH_SECRET,
+
 }
 
 
