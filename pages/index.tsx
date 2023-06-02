@@ -26,7 +26,7 @@ export default function Home() {
         <h1>Lunar</h1>
         <p>Welcome to Lunar. A closed network Valorant bot and Dashboard made for the Eclipse team.</p>
         <br/>
-        <p>Currently in development, made by <code><a href="https://github.com/HollowHuu">HollowHuu</a></code></p>
+        <p>Currently in development, made by <code><a href="https://github.com/HollowHuu" className='color-blue'>HollowHuu</a></code></p>
     </div>
     </>
 
