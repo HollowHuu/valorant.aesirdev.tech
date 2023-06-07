@@ -22,7 +22,25 @@ export const authOptions: NextAuthOptions = {
         colorScheme: 'auto',
     },
     secret: process.env.NEXTAUTH_SECRET,
-
+    callbacks: {
+        jwt({ token, account, user }) {
+          if (account) {
+            token.accessToken = account.access_token
+            token.id = account.providerAccountId
+          }
+          return token
+        },
+        session({ session, token, }) {
+            // I skipped the line below coz it gave me a TypeError
+            // session.accessToken = token.accessToken;
+            session.user.id = token.id;
+      
+            return session;
+          },
+      },
+      session: {
+        strategy: 'jwt',
+      },
 }
 
 
