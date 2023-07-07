@@ -72,7 +72,7 @@ export default function Profile() {
                 <br />
 
                 <h1 className='text-xl font-bold text-black'>Valorant</h1>
-                <p className='text-lg font-medium text-gray-600'>{}</p>
+                <p className='text-lg font-medium text-gray-600'>Waiting for app approval.</p>
 
                 <br />
 

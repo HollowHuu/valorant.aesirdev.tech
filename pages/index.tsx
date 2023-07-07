@@ -7,7 +7,6 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 
 // misc imports
 import { Inter } from 'next/font/google'
-import ValHeader from '../components/common/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,10 +22,13 @@ export default function Home() {
   return (
     <>
       <div>
-        <h1>Lunar</h1>
-        <p>Welcome to Lunar. A closed network Valorant bot and Dashboard made for the Eclipse team.</p>
+        <h1 className='text-purple-500 text-xl text-center'>Lunar</h1>
+        <p>Welcome to Lunar. A Discord role system with Dashboard, for those who'd rather spend their time playing the game.
+          <br/>
+          This is totally free and is run out of my own pocket. Ads (non-intrusive) will possibly be added to the dashboard if the costs get out of control.
+        </p>
         <br/>
-        <p>Currently in development, made by <code><a href="https://github.com/HollowHuu" className='color-blue'>HollowHuu</a></code></p>
+        <p>Currently in development, made by <code><a href="https://github.com/HollowHuu" className='text-sky-500'>HollowHuu</a></code></p>
     </div>
     </>
 

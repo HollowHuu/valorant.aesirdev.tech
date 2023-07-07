@@ -4,8 +4,8 @@ import packageJSON from "@/package.json";
 
 export default function Footer() {
   return (
-    <footer className={styles.footer}>
-      <p>hi</p>
+    <footer className="place-content-center">
+      <p></p>
     </footer>
   );
 }
