@@ -18,10 +18,28 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Profile() {
   // variables
   const { data: session, status } = useSession()
+  
+  
 
   // useEffect
   useEffect(() => {
     if (status === 'loading') return
+
+    if (session && status === 'authenticated') {
+      // Check DB for user valorant account
+      if (session.user?.valorant) {
+        // If valorant account is found, display it
+        console.log(session.user?.valorant)
+        document.getElementById("val")!.innerHTML = session.user?.valorant
+      } else {
+        // If valorant account is not found, display a message
+        document.getElementById("val")!.innerHTML = "No Valorant account found."
+      }
+    }
+
+
+    
+    
 
   }, [session, status])
 
@@ -72,7 +90,7 @@ export default function Profile() {
                 <br />
 
                 <h1 className='text-xl font-bold text-black'>Valorant</h1>
-                <p className='text-lg font-medium text-gray-600'>Waiting for app approval.</p>
+                <p id="val" className='text-lg font-medium text-gray-600'>Waiting for app approval.</p>
 
                 <br />
 

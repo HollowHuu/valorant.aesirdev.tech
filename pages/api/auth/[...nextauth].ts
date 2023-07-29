@@ -6,41 +6,46 @@ import clientPromise from '@/lib/mongodb';
 
 const discordScopes = ['identify', 'email'].join(' ')
 
+const Account = clientPromise.then((client) => client.db().collection('accounts'));
 
 
 export const authOptions: NextAuthOptions = {
-    adapter: MongoDBAdapter(clientPromise),
-    providers: [
-        DiscordProvider({
-            clientId: process.env.DISCORD_CLIENT_ID as string,
-            clientSecret: process.env.DISCORD_CLIENT_SECRET as string,
-            authorization: {params: {scope: discordScopes}}
-        }),
-        // Implement Google auth
-    ],
-    theme: {
-        colorScheme: 'auto',
+  adapter: MongoDBAdapter(clientPromise),
+  providers: [
+    DiscordProvider({
+      clientId: process.env.DISCORD_CLIENT_ID as string,
+      clientSecret: process.env.DISCORD_CLIENT_SECRET as string,
+      authorization: {params: {scope: discordScopes}}
+    }),
+    // Implement Google auth
+  ],
+  theme: {
+    colorScheme: 'auto',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    jwt({ token, account, user, profile }) {
+      if (account) {
+        token.accessToken = account.access_token
+        token.id = account.providerAccountId
+        token.valorant = account.valorant
+      }
+      return token
     },
-    secret: process.env.NEXTAUTH_SECRET,
-    callbacks: {
-        jwt({ token, account, user }) {
-          if (account) {
-            token.accessToken = account.access_token
-            token.id = account.providerAccountId
-          }
-          return token
-        },
-        session({ session, token, }) {
-            // I skipped the line below coz it gave me a TypeError
-            // session.accessToken = token.accessToken;
-            session.user.id = token.id;
-      
-            return session;
-          },
-      },
-      session: {
-        strategy: 'jwt',
-      },
+    session({ session, token, }) {
+
+      // Fetch User from DB
+
+
+      session.user.id = token.id;
+      session.user.valorant = token.valorant;
+
+      return session;
+    },
+  },
+  session: {
+    strategy: 'jwt',
+  },
 }
 
 
