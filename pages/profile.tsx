@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useEffect } from 'react'
 import Link from 'next/link'
-import winston from 'winston'
+const logger = require('pino')()
 
 // next-auth and react imports
 import { signIn, signOut, useSession } from 'next-auth/react'
@@ -14,15 +14,6 @@ import ValHeader from '../components/common/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  defaultMeta: { service: 'user-service' },
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({ filename: 'combined.log' })
-  ]
-})
 
 
 export default function Profile() {
@@ -93,7 +84,7 @@ export default function Profile() {
               })                       
               .then(response => response.json())
               .then(data => {
-                console.log(data)
+                logger.info(data)
                 if (data.puuid) {
                   fetch('/api/user/valorant', {
                     method: 'POST',
