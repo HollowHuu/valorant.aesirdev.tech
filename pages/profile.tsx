@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useEffect } from 'react'
 import Link from 'next/link'
-const logger = require('pino')()
+import pino from 'pino'
 
 // next-auth and react imports
 import { signIn, signOut, useSession } from 'next-auth/react'
@@ -14,6 +14,7 @@ import ValHeader from '../components/common/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const logger = pino()
 
 
 export default function Profile() {
