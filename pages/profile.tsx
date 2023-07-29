@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import { useEffect } from 'react'
 import Link from 'next/link'
+import winston from 'winston'
 
 // next-auth and react imports
 import { signIn, signOut, useSession } from 'next-auth/react'
@@ -13,6 +14,15 @@ import ValHeader from '../components/common/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  defaultMeta: { service: 'user-service' },
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'combined.log' })
+  ]
+})
 
 
 export default function Profile() {
@@ -63,6 +73,7 @@ export default function Profile() {
           // If accounts are found, display them and let the user choose which one to add
 
           let val = prompt("Please enter your Valorant username and tagline (ex. HollowHuu#6969):")
+          logger.info(val)
           if (val) {
             let region = prompt("Please enter your Valorant region (ex. EUROPE):")
             if (region) {
@@ -83,9 +94,6 @@ export default function Profile() {
               .then(response => response.json())
               .then(data => {
                 console.log(data)
-                if(data.status != 200) {
-
-                } 
                 if (data.puuid) {
                   fetch('/api/user/valorant', {
                     method: 'POST',
