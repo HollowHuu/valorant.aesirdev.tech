@@ -31,13 +31,80 @@ export default function Profile() {
         // If valorant account is found, display it
         console.log(session.user?.valorant)
         document.getElementById("val")!.innerHTML = session.user?.valorant
+
+        // Make button to remove valorant account
+        document.getElementById("val-b")!.innerHTML = "Remove Valorant Account"
+        document.getElementById("val-b")!.className = "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex flex-col items-center"
+        document.getElementById("val-b")!.onclick = function() {
+          // Remove valorant account from DB
+          fetch('/api/user/valorant', {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+
+          }).catch((error) => {
+            console.error('Error:', error);
+          }
+          ).then((response) => {
+            console.log(response)
+          }
+          )
+        }
       } else {
         // If valorant account is not found, display a message
         document.getElementById("val")!.innerHTML = "No Valorant account found."
+        document.getElementById("val-b")!.innerHTML = "Add Valorant Account"
+        document.getElementById("val-b")!.className = "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex flex-col items-center"
+        document.getElementById("val-b")!.onclick = function() {
+          // Add valorant account to DB
+          // Check Riot API for accounts matching user input
+          // If no accounts are found, display an error
+          // If accounts are found, display them and let the user choose which one to add
+
+          let val = prompt("Please enter your Valorant username and tagline (ex. HollowHuu#6969):")
+          if (val) {
+            let region = prompt("Please enter your Valorant region (ex. EUROPE):")
+            if (region) {
+              let [name, tag] = val.split("#")
+              fetch(`https://${region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${name}/${tag}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Riot-Token': process.env.RIOT_API_KEY as string
+                },
+              })
+              .then(response => response.json())
+              .then(data => {
+                console.log(data)
+                if (data.puuid) {
+                  fetch('/api/user/valorant', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      valorant: `${name}#${tag}`,
+                      region: region,
+                      puuid: data.puuid
+                    })
+                  }).catch((error) => {
+                    console.error('Error:', error);
+                  }
+                  ).then((response) => {
+                    console.log(response)
+                  }
+                  )
+                } else {
+                  alert("No accounts found.")
+                }
+              })
+            }
+          }
+        }
       }
+
     }
-
-
     
     
 
@@ -90,7 +157,8 @@ export default function Profile() {
                 <br />
 
                 <h1 className='text-xl font-bold text-black'>Valorant</h1>
-                <p id="val" className='text-lg font-medium text-gray-600'>Waiting for app approval.</p>
+                <p id="val" className='text-lg font-medium text-gray-600'></p>
+                <button id="val-b"></button>
 
                 <br />
 
