@@ -63,7 +63,7 @@ export default function Profile() {
           // Check Riot API for accounts matching user input
           // If no accounts are found, display an error
           // If accounts are found, display them and let the user choose which one to add
-
+          logger.info("Button has been clicked!")
           let val = prompt("Please enter your Valorant username and tagline (ex. HollowHuu#6969):")
           logger.info(val)
           if (val) {
