@@ -74,9 +74,18 @@ export default function Profile() {
                   'X-Riot-Token': process.env.RIOT_API_KEY as string
                 },
               })
+              .then(response => {
+                if (response.status != 200) {
+                  alert("There was an issue with your request. Please try again.")
+                }
+                return response
+              })                       
               .then(response => response.json())
               .then(data => {
                 console.log(data)
+                if(data.status != 200) {
+
+                } 
                 if (data.puuid) {
                   fetch('/api/user/valorant', {
                     method: 'POST',
