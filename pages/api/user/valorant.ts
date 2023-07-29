@@ -30,8 +30,9 @@ export default async function handler(
         }
     }
     else {
-        res.send({
-            error: "You must be signed in to access this API.",
+        res.status(401).send({
+            success: false,
+            error: "Unauthorized"
         })
     }
 }

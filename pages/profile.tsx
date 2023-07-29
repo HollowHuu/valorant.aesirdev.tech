@@ -37,7 +37,7 @@ export default function Profile() {
         document.getElementById("val-b")!.className = "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex flex-col items-center"
         document.getElementById("val-b")!.onclick = function() {
           // Remove valorant account from DB
-          fetch('https://valorant.aesirdev.tech/api/user/valorant', {
+          fetch('/api/user/valorant', {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'
@@ -78,7 +78,7 @@ export default function Profile() {
               .then(data => {
                 console.log(data)
                 if (data.puuid) {
-                  fetch('https://valorant.aesirdev.tech/api/user/valorant', {
+                  fetch('/api/user/valorant', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json'
