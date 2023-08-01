@@ -23,7 +23,7 @@ export default function Home() {
     <>
       <div>
         <h1 className='text-purple-500 text-xl text-center'>Lunar</h1>
-        <p>Welcome to Lunar. A Discord role system with Dashboard, for those who'd rather spend their time playing the game.
+        <p>Welcome to Lunar. A Discord role system with Dashboard, for those who&apos;d rather spend their time playing the game.
           <br/>
           This is totally free and is run out of my own pocket. Ads (non-intrusive) will possibly be added to the dashboard if the costs get out of control.
         </p>
