@@ -1,12 +1,8 @@
-import { getSession } from "next-auth/react"
 import clientPromise from "@/lib/mongodb"
 import type { NextApiRequest, NextApiResponse } from "next"
 import axios from 'axios';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
-import pino from 'pino'
-
-const logger = pino()
 
 export default async function handler(
   req: NextApiRequest,
@@ -102,7 +98,7 @@ export default async function handler(
             success: true,
         })
     }
-    
+
     else {
         res.status(405).send({
             success: false,

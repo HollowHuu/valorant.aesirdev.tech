@@ -32,11 +32,21 @@ export default function Profile() {
       // Check DB for user valorant account
       axios.get('/api/user/verify')
       .then(function (response) {
-        logger.info({response})
         if (response.data.success == true) {
           setValorant(response.data.puuid)
         }
       })
+      if(valorant != "") {
+        // Display stats acquired from profile api
+        axios.get('/api/valorant/profile')
+        .then(function (response) {
+          // Display username and tagline
+          document.getElementById("user")!.innerHTML = "Username: " + response.data.gameName + "#" + response.data.tagLine
+        })
+        .catch(function (error) {
+          logger.error(error)
+        })
+      }
       
       
     }
@@ -52,7 +62,7 @@ export default function Profile() {
           {/* Round image and center everything */}
           <br />
           <div className=''>
-            
+            <p id="user"></p>
           </div>
         </div>
         </>
