@@ -23,7 +23,8 @@ export default async function handler(
     }
 
     if(req.method === 'POST') {
-        let id = req.body.id
+        let id = req.body.user_id
+        console.log(req.body)
         // Get valorant account from DB and return success
         let Account = clientPromise.then((client) => client.db().collection('accounts'));
         const query = { providerAccountId: id }
