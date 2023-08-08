@@ -13,7 +13,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-    const bot_key = req.headers.Authorization
+    const bot_key = req.headers['authorization'] || req.headers['Authorization']
     if(bot_key !== process.env.BOT_KEY) {
         res.status(401).send({
             success: false,
@@ -24,7 +24,6 @@ export default async function handler(
 
     if(req.method === 'POST') {
         let id = req.body.user_id
-        console.log(req.body)
         // Get valorant account from DB and return success
         let Account = clientPromise.then((client) => client.db().collection('accounts'));
         const query = { providerAccountId: id }
