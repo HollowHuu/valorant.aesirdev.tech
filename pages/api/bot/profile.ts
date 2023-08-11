@@ -75,7 +75,7 @@ export default async function handler(
                     gameName: profile.data.data.name,
                     tagLine: profile.data.data.tag,
                     currentTier: mmr.data.data.current_data.currenttier,
-                    curerntTierPatched: mmr.data.data.current_data.currenttierpatched,
+                    currentTierPatched: mmr.data.data.current_data.currenttierpatched,
                 })
             } else {
                 res.status(200).send({
