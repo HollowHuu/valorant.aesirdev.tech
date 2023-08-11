@@ -76,9 +76,9 @@ export default async function handler(
             })
         }
         else {
-            res.status(200).send({
-                success: true,
-                puuid: null
+            res.status(201).send({
+                success: false,
+                error: "No account found"
             })
         }
     }
