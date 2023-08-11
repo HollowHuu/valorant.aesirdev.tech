@@ -42,11 +42,37 @@ export default async function handler(
             })
             console.log(profile.data)
 
+            if(profile.status !== 200) {
+                res.status(500).send({
+                    success: false,
+                    error: "Internal server error"
+                })
+                return
+            }
+
+            // Fetch rank data from API
+            let mmr = await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/eu/${account.puuid}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': process.env.HDEV_API_KEY,
+                }
+            })
+
+            if(mmr.status !== 200) {
+                res.status(500).send({
+                    success: false,
+                    error: "Internal server error"
+                })
+                return
+            }
+
             res.status(200).send({
                 success: true,
                 puuid: account.puuid,
                 gameName: profile.data.data.name,
                 tagLine: profile.data.data.tag,
+                currentTier: mmr.data.data.currenttier,
+                curerntTierPatched: mmr.data.data.currenttierpatched,
             })
         }
         else {
