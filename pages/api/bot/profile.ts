@@ -84,7 +84,7 @@ export default async function handler(
                     gameName: profile.data.data.name,
                     tagLine: profile.data.data.tag,
                     currentTier: null,
-                    curerntTierPatched: "Unranked",
+                    currentTierPatched: "Unranked",
                 })
             }
 
