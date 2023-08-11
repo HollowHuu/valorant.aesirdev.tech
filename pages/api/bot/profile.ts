@@ -66,14 +66,29 @@ export default async function handler(
                 return
             }
 
-            res.status(200).send({
-                success: true,
-                puuid: account.puuid,
-                gameName: profile.data.data.name,
-                tagLine: profile.data.data.tag,
-                currentTier: mmr.data.data.currenttier,
-                curerntTierPatched: mmr.data.data.currenttierpatched,
-            })
+            console.log(mmr.data.data.current_data.currenttier)
+
+            if(mmr.data.data.current_data.currenttier && mmr.data.data.current_data.currenttierpatched) {
+                res.status(200).send({
+                    success: true,
+                    puuid: account.puuid,
+                    gameName: profile.data.data.name,
+                    tagLine: profile.data.data.tag,
+                    currentTier: mmr.data.data.current_data.currenttier,
+                    curerntTierPatched: mmr.data.data.current_data.currenttierpatched,
+                })
+            } else {
+                res.status(200).send({
+                    success: true,
+                    puuid: account.puuid,
+                    gameName: profile.data.data.name,
+                    tagLine: profile.data.data.tag,
+                    currentTier: null,
+                    curerntTierPatched: "Unranked",
+                })
+            }
+
+
         }
         else {
             res.status(201).send({
