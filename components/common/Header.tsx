@@ -20,9 +20,10 @@ export default function DashboardHeader() {
                     <button
                         aria-label="Toggle Dark Mode"
                         type="button"
-                        className="w-10 h-10 p-3 rounded focus:outline-none justify-self-end"
+                        className="w-20 h-10 p-3 rounded focus:outline-none justify-self-end bg-indigo-400 dark:bg-violet-400 hover:bg-indigo-300 dark:hover:bg-violet-700"
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-                        {theme === "dark" ? "🌙" : "☀️"}
+                        {/* Change text based on theme used */}
+                        {theme === "dark" ? ("Dark") : ("Light")}
                     </button>
                 </div>
             </div>
