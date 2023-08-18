@@ -17,13 +17,10 @@ export default function DashboardHeader() {
                     <Link href="search" className='p-element'>Search</Link>
                     <Link href="profile" className='p-element'>Profile</Link>
                     <Link href="settings" className='p-element'>Settings</Link>
-                </div>
-                {/* Dark mode button at the very right */}
-                <div className="flex items-center justify-center gap-2 md:gap-8">
                     <button
                         aria-label="Toggle Dark Mode"
                         type="button"
-                        className="w-10 h-10 p-3 rounded focus:outline-none"
+                        className="w-10 h-10 p-3 rounded focus:outline-none justify-self-end"
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
                         {theme === "dark" ? "🌙" : "☀️"}
                     </button>
