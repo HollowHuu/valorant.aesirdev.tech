@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import pino from 'pino'
 import axios from 'axios'
-
+import { useTheme } from 'next-themes'
 // next-auth and react imports
 import { signIn, signOut, useSession } from 'next-auth/react'
 
@@ -22,10 +22,18 @@ export default function Profile() {
   // variables
   const { data: session, status } = useSession()
   const [valorant, setValorant] = useState("")
+  const [rankImage, setRankImage] = useState("https://cdn.discordapp.com/attachments/702085428185923586/1142002562854309898/image.png")
+  const [banner, setBanner] = useState("https://cdn.discordapp.com/attachments/702085428185923586/1142002562854309898/image.png")
+
+  // Mounted
+  const [mounted, setMounted] = useState(false);
   
+  // Theme
+  const { theme, setTheme } = useTheme();
 
   // useEffect
   useEffect(() => {
+    setMounted(true);
     if (status === 'loading') return
 
     if (session && status === 'authenticated') {
@@ -41,7 +49,14 @@ export default function Profile() {
         axios.get('/api/valorant/profile')
         .then(function (response) {
           // Display username and tagline
-          document.getElementById("user")!.innerHTML = "Username: " + response.data.gameName + "#" + response.data.tagLine
+          if(response.data.success == false) {
+            return;
+          }
+          document.getElementById("user")!.innerHTML = response.data.gameName + "#" + response.data.tagLine
+
+
+          setRankImage(response.data.currentRankImage)
+          setBanner(response.data.card)
         })
         .catch(function (error) {
           logger.error(error)
@@ -53,19 +68,26 @@ export default function Profile() {
     
     
 
-  }, [session, status, valorant])
+  }, [session, status, valorant, rankImage])
+
+  if(!mounted) return null;
 
   if (session) {
     return (
-        <>
-        <div>
-          {/* Round image and center everything */}
-          <br />
-          <div className=''>
-            <p id="user"></p>
+        <html className={theme}>
+        <div className='my-5 min-h-screen'>
+          {/* Display the Unranked Valorant Icon and then the username */}
+          <div className='flex flex-row justify-center items-center'>
+            <div className='flex flex-col justify-center items-center mx-auto'>
+              <Image id='rank' src={rankImage} width={250} height={250} alt='image' />
+            </div>
+          </div>
+          <div className='text-center my-auto text-xl justify-center align-center relative'>
+            <center><Image src={banner} alt='' className='drop-shadow-xl' width={452} height={128}></Image></center>
+            <p id="user" className='text-3xl text-indigo-400 dark:text-violet-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'></p>
           </div>
         </div>
-        </>
+        </html>
     )
   }
   return (

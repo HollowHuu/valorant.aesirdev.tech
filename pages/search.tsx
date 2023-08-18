@@ -20,7 +20,7 @@ export default function Search() {
   }, [session, status])
   return (
     <>
-      <div>
+      <div className='min-h-screen'>
         <p>The search function is currently not implemented. It is currently a low priority feature.</p>
     </div>
     </>

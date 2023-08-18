@@ -1,10 +1,21 @@
 import Link from "next/link"
 import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 
 export default function DashboardHeader() {
     const { theme, setTheme } = useTheme();
-    return (
+    const [mounted, setMounted] = useState(false);
 
+    
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if(!mounted) return null;
+
+    return (
+        <html className={theme}>
         <div
             className={
                 "container max-w-full flex items-center px-6 border-b-2 h-24"
@@ -23,10 +34,11 @@ export default function DashboardHeader() {
                         className="w-20 h-10 p-3 rounded focus:outline-none justify-self-end bg-indigo-400 dark:bg-violet-400 hover:bg-indigo-300 dark:hover:bg-violet-700"
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
                         {/* Change text based on theme used */}
-                        {theme === "dark" ? ("Dark") : ("Light")}
+                        {theme === "dark" ? ("dark") : ("light")}
                     </button>
                 </div>
             </div>
         </div>
+        </html>
     )
 }

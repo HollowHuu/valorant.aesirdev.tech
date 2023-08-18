@@ -7,11 +7,11 @@ import axios from 'axios'
 
 // next-auth and react imports
 import { signIn, signOut, useSession } from 'next-auth/react'
+import { useTheme } from 'next-themes'
 
 
 // misc imports
 import { Inter } from 'next/font/google'
-import ValHeader from '../components/common/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +23,7 @@ export default function Settings() {
   const { data: session, status } = useSession()
   const [valorant, setValorant] = useState("")
   
+  const { theme, setTheme } = useTheme();
 
   // useEffect
   useEffect(() => {
@@ -61,6 +62,7 @@ export default function Settings() {
             console.log(response)
           }
           )
+          window.location.reload()
         }
       } else {
         // If valorant account is not found, display a message
@@ -82,6 +84,12 @@ export default function Settings() {
               alert("Something went wrong. Please try again.")
             });
           }
+          
+          // Reload page after 1 sec
+          setTimeout(function() {
+            window.location.reload()
+          }
+          , 1000)
         }
       }
 
@@ -93,8 +101,9 @@ export default function Settings() {
 
   if (session) {
     return (
-        <>
-        <div>
+      <html className={theme}>
+      <div className='min-h-screen'>
+        <div className=''>
           {/* Round image and center everything */}
           <br />
           <div className=''>
@@ -102,20 +111,11 @@ export default function Settings() {
           </div>
 
           <br />
-          <Link
-            className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex flex-col items-center'
-            href={"/api/auth/signout"}
-            onClick={(e) => {
-              e.preventDefault();
-              signOut();
-            }}>
-            Sign Out
-          </Link>
+          
         </div>
-        <br />
         <div>
           {/* Display profile settings in a box */}
-          <div className='bg-gray-100 rounded-xl p-4 mx-10'>
+          <div className='bg-black-100 dark:bg-gray-100 rounded-xl p-4 mx-10'>
             <h1 className='text-2xl font-bold text-black'>Profile Settings</h1>
             <br />
             
@@ -145,10 +145,21 @@ export default function Settings() {
 
 
               </div>
+              
             </div>
+            <Link
+            className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex w-1/6 items-center mx-auto justify-center my-2'
+            href={"/api/auth/signout"}
+            onClick={(e) => {
+              e.preventDefault();
+              signOut();
+            }}>
+            Sign Out
+          </Link>
           </div>
         </div>
-        </>
+        </div>
+        </html>
     )
   }
   return (

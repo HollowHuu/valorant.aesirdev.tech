@@ -38,13 +38,49 @@ export default async function handler(
                 }
             })
             console.log(profile.data)
-
-            res.status(200).send({
-                success: true,
-                puuid: account.puuid,
-                gameName: profile.data.data.name,
-                tagLine: profile.data.data.tag,
+            // Fetch rank data from API
+            let mmr = await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/eu/${account.puuid}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': process.env.HDEV_API_KEY,
+                }
             })
+            console.log(mmr.data.data.current_data.images)
+
+            if(mmr.status !== 200) {
+                res.status(500).send({
+                    success: false,
+                    error: "Internal server error"
+                })
+                return
+            }
+
+            console.log(mmr.data.data.current_data.currenttier)
+
+            if(mmr.data.data.current_data.currenttier && mmr.data.data.current_data.currenttierpatched) {
+                res.status(200).send({
+                    success: true,
+                    puuid: account.puuid,
+                    gameName: profile.data.data.name,
+                    tagLine: profile.data.data.tag,
+                    card: profile.data.data.card.wide,
+                    currentTier: mmr.data.data.current_data.currenttier,
+                    currentTierPatched: mmr.data.data.current_data.currenttierpatched,
+                    currentRankImage: mmr.data.data.current_data.images.large,
+                    
+                })
+            } else {
+                res.status(200).send({
+                    success: true,
+                    puuid: account.puuid,
+                    gameName: profile.data.data.name,
+                    tagLine: profile.data.data.tag,
+                    card: profile.data.data.card.wide,
+                    currentTier: null,
+                    currentTierPatched: "Unranked",
+                    currentRankImage: mmr.data.data.current_data.images.large,
+                })
+            }
         }
         else {
             res.status(200).send({
