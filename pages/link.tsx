@@ -50,7 +50,7 @@ export default function Search() {
                 <Image src='https://cdn.discordapp.com/attachments/702085428185923586/1143115184618078208/image.png' alt='image' height={500} width={500} className='mx-auto'/>
 
                 <h1 className='text-2xl mt-10'>Step 6</h1>
-                <p>Success! Now it should refresh and show you a long ID. If not make sure you entered the right account and you're playing on European servers.</p>
+                <p>Success! Now it should refresh and show you a long ID. If not make sure you entered the right account and you&apos;re playing on European servers.</p>
                 <Image src='https://cdn.discordapp.com/attachments/702085428185923586/1143118606104789042/image.png' alt='image' height={500} width={500} className='mx-auto'/>
             </div>
 
