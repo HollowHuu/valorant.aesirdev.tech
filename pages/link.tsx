@@ -30,7 +30,7 @@ export default function Search() {
                 <p>Images detailing the process can be found below</p>
 
                 <h1 className='text-2xl mt-10'>Step 1</h1>
-                <p>Go to the <Link href="/settings" className='text-indigo-400'>Settings</Link> page, and click "Sign In"</p>
+                <p>Go to the <Link href="/settings" className='text-indigo-400'>Settings</Link> page, and click &quot;Sign In&quot;</p>
                 <Image src='https://cdn.discordapp.com/attachments/702085428185923586/1143119979420590090/image.png' alt='image' height={500} width={500} className='mx-auto'/>
                 
                 <h1 className='text-2xl mt-10'>Step 2</h1>
