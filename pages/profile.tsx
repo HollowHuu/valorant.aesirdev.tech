@@ -91,8 +91,8 @@ export default function Profile() {
     )
   }
   return (
-    <>
-        <h1>Access Denied</h1>
+    <div className='min-h-screen mx-auto text-center'>
+        <h1>Access Denied<br />You must be signed in to view this page</h1>
         <br />
         <p>
             <Link
@@ -103,9 +103,9 @@ export default function Profile() {
                     signIn();
                 }}
             >
-                You must be signed in to view this page
+                Sign In
             </Link>
         </p>
-    </>
+      </div>
     )
 }
