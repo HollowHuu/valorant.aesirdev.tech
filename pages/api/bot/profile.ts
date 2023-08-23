@@ -74,8 +74,11 @@ export default async function handler(
                     puuid: account.puuid,
                     gameName: profile.data.data.name,
                     tagLine: profile.data.data.tag,
+                    card: profile.data.data.card.wide,
+                    banner: profile.data.data.card.large,
                     currentTier: mmr.data.data.current_data.currenttier,
                     currentTierPatched: mmr.data.data.current_data.currenttierpatched,
+                    currentRankImage: mmr.data.data.current_data.images.large,
                 })
             } else {
                 res.status(200).send({
