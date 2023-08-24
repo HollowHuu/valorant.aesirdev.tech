@@ -11,7 +11,7 @@ import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Search() {
+export default function link() {
   // variables
   const { data: session, status } = useSession()
 
