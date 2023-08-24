@@ -11,7 +11,7 @@ import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function tos() {
+export default function Tos() {
   // variables
   const { data: session, status } = useSession()
 
@@ -24,10 +24,10 @@ export default function tos() {
     <div>
         <div className='min-h-screen'>
             <div className='text-center mx-auto my-5 max-w-prose'>
-                <h1 className='text-xl font-bold'>Terms of Service ("TOS")</h1>
+                <h1 className='text-xl font-bold'>Terms of Service (&quot;TOS&quot;)</h1>
                 <p className=''>Last Updated: 24/08/2023</p>
                 <br />
-                <p>These Terms of Service ("TOS") govern your use of Lunar. By using Lunar, you agree to abide by these terms. If you do not agree with these terms, please refrain from using the App.</p>
+                <p>These Terms of Service (&quot;TOS&quot;) govern your use of Lunar. By using Lunar, you agree to abide by these terms. If you do not agree with these terms, please refrain from using the App.</p>
                 
                 <p className='font-bold mt-5'>1. Acceptable Use</p>
                 <p>You agree to use Lunar solely for its intended purpose of providing automatic role management and summarized profile statistics for Valorant players. You agree not to use the App for any unlawful or unauthorized purposes.</p>
@@ -42,7 +42,7 @@ export default function tos() {
                 <p>Your use of Lunar is also governed by our Privacy Policy, which outlines how we collect, use, and safeguard your personal information. By using Lunar, you consent to the practices described in the Privacy Policy.</p>
 
                 <p className='font-bold mt-5'>5. Disclaimer of Warranty:</p>
-                <p>Lunar is provided "as is" without warranties of any kind, whether expressed or implied. We do not guarantee the accuracy, completeness, or reliability of the App's content or functionality.</p>
+                <p>Lunar is provided &quot;as is&quot; without warranties of any kind, whether expressed or implied. We do not guarantee the accuracy, completeness, or reliability of the App&apos;s content or functionality.</p>
 
                 <p className='font-bold mt-5'>6. Limitation of Liability:</p>
                 <p>To the extent permitted by law, we shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of Lunar.</p>

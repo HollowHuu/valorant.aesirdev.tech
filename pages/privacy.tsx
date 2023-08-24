@@ -11,7 +11,7 @@ import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function privacy() {
+export default function Privacy() {
   // variables
   const { data: session, status } = useSession()
 
