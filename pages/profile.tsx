@@ -38,25 +38,31 @@ export default function Profile() {
 
     if (session && status === 'authenticated') {
       // Check DB for user valorant account
-      axios.get('/api/user/verify')
-      .then(function (response) {
-        if (response.data.success == true) {
-          setValorant(response.data.puuid)
-        }
-      })
+      console.log({valorant})
+      if(valorant == "") {
+        axios.get('/api/user/verify')
+          .then(function (response) {
+            if (response.data.success == true) {
+              setValorant(response.data.puuid)
+            }
+        })
+      }
       if(valorant != "") {
         // Display stats acquired from profile api
         axios.get('/api/valorant/profile')
         .then(function (response) {
           // Display username and tagline
           if(response.data.success == false) {
+            console.log("Error: " + response.data.error)
             return;
           }
-          document.getElementById("user")!.innerHTML = response.data.gameName + "#" + response.data.tagLine
+          // document.getElementById("user")!.innerHTML = response.data.gameName + "#" + response.data.tagLine
 
 
           setRankImage(response.data.currentRankImage)
-          setBanner(response.data.card)
+          document.body.style.backgroundImage = "url(" + response.data.card + ")"
+          document.body.style.backgroundSize = "fit"
+
         })
         .catch(function (error) {
           logger.error(error)
@@ -64,30 +70,21 @@ export default function Profile() {
       }
       
       
+      
     }
     
     
 
-  }, [session, status, valorant, rankImage])
+  }, [session, status, valorant, rankImage, banner])
 
   if(!mounted) return null;
 
   if (session) {
     return (
-        <html className={theme}>
-        <div className='my-5 min-h-screen'>
-          {/* Display the Unranked Valorant Icon and then the username */}
-          <div className='flex flex-row justify-center items-center'>
-            <div className='flex flex-col justify-center items-center mx-auto'>
-              <Image id='rank' src={rankImage} width={250} height={250} alt='image' />
-            </div>
-          </div>
-          <div className='text-center my-auto text-xl justify-center align-center relative'>
-            <center><Image src={banner} alt='' className='drop-shadow-xl' width={452} height={128}></Image></center>
-            <p id="user" className='text-3xl text-indigo-400 dark:text-violet-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'></p>
-          </div>
-        </div>
-        </html>
+        
+      <div className={theme}>
+        
+      </div>
     )
   }
   return (
