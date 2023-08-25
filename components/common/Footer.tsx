@@ -1,11 +1,15 @@
 import Link from "next/link";
 import styles from "./footer.module.css";
 import packageJSON from "@/package.json";
+import { useTheme } from "next-themes";
 
 export default function Footer() {
+  const { theme, setTheme } = useTheme();
+
   return (
+    <div className={theme}>
     <footer className="place-content-center">
-      <hr className="divide-slate-500"/>
+      <hr className="border-black dark:border-white"/>
       
       
       {/* Privacy and TOS */}
@@ -20,5 +24,6 @@ export default function Footer() {
         </Link>
       </div>
     </footer>
+    </div>
   );
 }

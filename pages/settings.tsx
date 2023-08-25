@@ -101,7 +101,7 @@ export default function Settings() {
 
   if (session) {
     return (
-      <html className={theme}>
+      <div className={theme}>
       <div className='min-h-screen'>
         <div className=''>
           {/* Round image and center everything */}
@@ -115,30 +115,30 @@ export default function Settings() {
         </div>
         <div>
           {/* Display profile settings in a box */}
-          <div className='bg-black-100 dark:bg-gray-100 rounded-xl p-4 mx-10'>
-            <h1 className='text-2xl font-bold text-black'>Profile Settings</h1>
+          <div className='bg-black dark:bg-gray-100 rounded-xl p-4 mx-10 text-white dark:text-black'>
+            <h1 className='text-2xl font-bold'>Profile Settings</h1>
             <br />
             
             <div className='grid grid-cols-2 gap-4'>
               <div>
-                <h1 className='text-xl font-bold text-black'>name</h1>
-                <p className='text-lg font-medium text-gray-600'>{session.user?.name}</p>
+                <h1 className='text-xl font-bold text-white dark:text-black'>name</h1>
+                <p className='text-lg font-medium text-gray-300 dark:text-gray-700'>{session.user?.name}</p>
                 
 
                 <br />
 
-                <h1 className='text-xl font-bold text-black'>ID</h1>
-                <p className='text-lg font-medium text-gray-600'>{session.user?.id}</p>
+                <h1 className='text-xl font-bold text-white dark:text-black'>ID</h1>
+                <p className='text-lg font-medium text-gray-300 dark:text-gray-700'>{session.user?.id}</p>
                 
                 <br />
 
-                <h1 className='text-xl font-bold text-black'>Email</h1>
-                <p className='text-lg font-medium text-gray-600'>{session.user?.email}</p>
+                <h1 className='text-xl font-bold text-white dark:text-black'>Email</h1>
+                <p className='text-lg font-medium text-gray-300 dark:text-gray-700'>{session.user?.email}</p>
 
                 <br />
 
-                <h1 className='text-xl font-bold text-black'>Valorant</h1>
-                <p id="val" className='text-lg font-medium text-gray-600'></p>
+                <h1 className='text-xl font-bold text-white dark:text-black'>Valorant</h1>
+                <p id="val" className='text-lg font-medium text-gray-300 dark:text-gray-700'></p>
                 <button id="val-b"></button>
 
                 <br />
@@ -159,7 +159,7 @@ export default function Settings() {
           </div>
         </div>
         </div>
-        </html>
+        </div>
     )
   }
   return (

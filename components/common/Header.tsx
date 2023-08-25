@@ -28,7 +28,7 @@ export default function DashboardHeader() {
             </Head>
         <div
             className={
-                "container max-w-full flex items-center px-6 border-b-2 h-24"
+                "container max-w-full flex items-center px-6 border-b-2 h-24 dark:border-slate-100 border-black"
             }>
             <h1 className="fond-bold p-element">Aesir Development</h1>
             <div className='grow'>
@@ -38,16 +38,21 @@ export default function DashboardHeader() {
                     <Link href="search" className='p-element'>Search</Link>
                     <Link href="profile" className='p-element'>Profile</Link>
                     <Link href="settings" className='p-element'>Settings</Link>
+
+                    
+                </div>
+                
+            </div>
+            <div className="items-end justify-end">
                     <button
                         aria-label="Toggle Dark Mode"
                         type="button"
-                        className="w-20 h-10 rounded focus:outline-none justify-self-end bg-indigo-400 dark:bg-violet-400 hover:bg-indigo-300 dark:hover:bg-violet-700"
+                        className="w-20 h-10 rounded focus:outline-none bg-indigo-400 dark:bg-violet-400 hover:bg-indigo-300 dark:hover:bg-violet-700 float-right"
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
                         {/* Change text based on theme used */}
-                        {theme === "dark" ? ("dark") : ("light")}
+                        {theme === "dark" ? ("🌜") : ("🌞")}
                     </button>
-                </div>
-            </div>
+                    </div>
         </div>
         </html>
     )

@@ -23,7 +23,7 @@ export default function Profile() {
   const { data: session, status } = useSession()
   const [valorant, setValorant] = useState("")
   const [rankImage, setRankImage] = useState("https://cdn.discordapp.com/attachments/702085428185923586/1142002562854309898/image.png")
-  const [banner, setBanner] = useState("https://media.valorant-api.com/playercards/7d7f15c5-46f5-58ea-b1d5-bba31c60d5d0/wideart.png")
+  const [banner, setBanner] = useState("https://i.gifer.com/YCZH.gif")
   // Mounted
   const [mounted, setMounted] = useState(false);
   
@@ -85,11 +85,11 @@ export default function Profile() {
       <div className={theme} >
         <div className='min-h-screen'>        
         <div className='relative'>
-          <div className='absolute inset-0 backdrop-blur-sm'></div>
+          <div className='absolute inset-0'></div>
           <img src={banner} alt="Banner" className='w-full' />
-          <div className='absolute bottom-0 w-full h-full' style={{background: `linear-gradient(transparent, rgba(0, 0, 0, 1))`, backdropFilter: `backdrop-filter: blur(20px)`}}></div>
+          <div className='absolute bottom-0 w-full h-full gradient'></div>
         </div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 dark:text-white light:text-black text-3xl">
             {session.user.name}
           </div>
 
