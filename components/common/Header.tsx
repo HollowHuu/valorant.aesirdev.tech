@@ -16,6 +16,14 @@ export default function DashboardHeader() {
 
     return (
         <html className={theme}>
+            <head>
+                <title>Lunar</title>
+                <meta content="Lunar Dashboard" property="og:title" />
+                <meta content="Lunar effortlessly connects your Discord and Valorant accounts, streamlining your gaming experience. With a user-friendly dashboard and a convenient Discord bot, managing your in-game information has never been easier." property="og:description" />
+                <meta content="https://valorant.aesirdev.tech" property="og:url" />
+                <meta content="https://cdn.discordapp.com/attachments/774650675593609268/1136331735265722408/Bot_logo_witout_back.png" property="og:image" />
+                <meta content="#43B581" data-react-helmet="true" name="theme-color" />
+            </head>
         <div
             className={
                 "container max-w-full flex items-center px-6 border-b-2 h-24"
