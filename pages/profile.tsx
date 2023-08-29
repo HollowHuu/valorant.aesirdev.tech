@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import pino from 'pino'
-import axios from 'axios'
+import request from 'request'
 import { useTheme } from 'next-themes'
 // next-auth and react imports
 import { signIn, signOut, useSession } from 'next-auth/react'
@@ -22,6 +22,7 @@ export default function Profile() {
   // variables
   const { data: session, status } = useSession()
   const [valorant, setValorant] = useState("")
+  const [tokens, setTokens] = useState({refreshToken: "", accessToken: "", idToken: ""})
   const [rankImage, setRankImage] = useState("https://cdn.discordapp.com/attachments/702085428185923586/1142002562854309898/image.png")
   const [banner, setBanner] = useState("https://i.gifer.com/YCZH.gif")
   // Mounted
@@ -38,38 +39,36 @@ export default function Profile() {
 
     if (status === 'loading') return
     if (session && status === 'authenticated') {
-      // Check DB for user valorant account
-      console.log({valorant})
-      if(valorant == "") {
-        axios.get('/api/user/verify')
-          .then(function (response) {
-            if (response.data.success == true) {
-              setValorant(response.data.puuid)
-            }
-        })
-      }
-      if(valorant != "") {
-        // Display stats acquired from profile api
-        axios.get('/api/valorant/profile')
-        .then(function (response) {
-          // Display username and tagline
-          if(response.data.success == false) {
-            console.log("Error: " + response.data.error)
-            return;
+      // Check DB for Valorant tokens
+      console.log({tokens})
+      if(tokens.accessToken == "") {
+        fetch('/api/user/verify').then(res => res.json()).then(data => {
+          if(data.error) {
+            console.log(data.error)
+            setTokens({refreshToken: "", accessToken: "", idToken: ""})
+          } else {
+            console.log(data)
+            setTokens({refreshToken: data.refreshToken, accessToken: data.accessToken, idToken: data.idToken})
           }
-          // document.getElementById("user")!.innerHTML = response.data.gameName + "#" + response.data.tagLine
-
-
-          setRankImage(response.data.currentRankImage)
-          setBanner(response.data.card)
-
-        })
-        .catch(function (error) {
-          logger.error(error)
         })
       }
-      
-      
+
+
+
+      if(tokens.accessToken != "")  {
+        // Get Valorant ID
+        fetch('https://auth.riotgames.com/userinfo', {
+          headers: {
+            "Authorization": `Bearer ${tokens.accessToken}`,
+            // Disable CORS
+            "Access-Control-Allow-Origin": "*"
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          logger.info(data)
+        })
+      }
       
     }
     

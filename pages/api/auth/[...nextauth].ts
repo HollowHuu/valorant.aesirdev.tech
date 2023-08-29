@@ -29,6 +29,7 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = account.access_token
         token.id = account.providerAccountId
         token.valorant = account.valorant
+        token.tokens = account.tokens
       }
       return token
     },
@@ -39,6 +40,7 @@ export const authOptions: NextAuthOptions = {
 
       session.user.id = token.id;
       session.user.valorant = token.valorant;
+      session.user.tokens = token.tokens;
 
       return session;
     },

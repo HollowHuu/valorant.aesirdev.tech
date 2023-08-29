@@ -76,16 +76,18 @@ export default async function handler(
         }
 
         let account = await (await Account).findOne(query, options)
-        if(account?.puuid) {
+        if(account?.tokens) {
             res.status(200).send({
                 success: true,
-                puuid: account.puuid
+                refreshToken: account.tokens.refreshToken,
+                accessToken: account.tokens.accessToken,
+                idToken: account.tokens.idToken,
             })
         }
         else {
-            res.status(200).send({
-                success: true,
-                puuid: null
+            res.status(201).send({
+                success: false,
+                error: "No valorant account linked",
             })
         }
     }

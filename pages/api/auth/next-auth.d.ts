@@ -5,6 +5,11 @@ declare module 'next-auth' {
     user: {
       id: string;
       valorant: string;
+      tokens: {
+        refreshToken: string;
+        accessToken: string;
+        idToken: string;
+      }
     } & DefaultSession['user'];
   }
 }
