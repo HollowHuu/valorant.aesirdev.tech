@@ -3,13 +3,14 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import axios from 'axios';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
+import { URLPattern } from "next/server";
 
 const clientSecret = process.env.RIOT_CLIENT_SECRET
 
 const clientID = process.env.RIOT_CLIENT_ID
 
 const baseURL = process.env.NEXTAUTH_URL
-const appCallbackURL = `${baseURL}/api/oauth/callback`
+const appCallbackURL = `${baseURL}api/oauth/callback`
 
 const provider = "https://auth.riotgames.com"
 const authorizeURL = `${provider}/authorize`
@@ -28,7 +29,8 @@ export default async function handler(
         return
     }
     
-    const accessCode = req.body.code;
+    let accessCode = req.body.code;
+    accessCode = decodeURI(accessCode)
 
     axios.post(tokenURL, {
         auth: {
@@ -43,7 +45,7 @@ export default async function handler(
     }).then((response) => {
         if(response.status != 200) return res.status(500).send({
             success: false,
-            error: "Internal server error"
+            error: response.data.error
         })
         const data = JSON.parse(response.data)
         console.log(data)
