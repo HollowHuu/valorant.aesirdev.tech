@@ -22,7 +22,6 @@ export default function Profile() {
   // variables
   const { data: session, status } = useSession()
   const [valorant, setValorant] = useState("")
-  const [tokens, setTokens] = useState({refreshToken: "", accessToken: "", idToken: ""})
   const [rankImage, setRankImage] = useState("https://cdn.discordapp.com/attachments/702085428185923586/1142002562854309898/image.png")
   const [banner, setBanner] = useState("https://i.gifer.com/YCZH.gif")
   // Mounted
@@ -40,33 +39,14 @@ export default function Profile() {
     if (status === 'loading') return
     if (session && status === 'authenticated') {
       // Check DB for Valorant tokens
-      console.log({tokens})
-      if(tokens.accessToken == "") {
+      if(valorant == "") {
         fetch('/api/user/verify').then(res => res.json()).then(data => {
           if(data.error) {
             console.log(data.error)
-            setTokens({refreshToken: "", accessToken: "", idToken: ""})
           } else {
             console.log(data)
-            setTokens({refreshToken: data.refreshToken, accessToken: data.accessToken, idToken: data.idToken})
+            setValorant(data.puuid)
           }
-        })
-      }
-
-
-
-      if(tokens.accessToken != "")  {
-        // Get Valorant ID
-        fetch('https://auth.riotgames.com/userinfo', {
-          headers: {
-            "Authorization": `Bearer ${tokens.accessToken}`,
-            // Disable CORS
-            "Access-Control-Allow-Origin": "*"
-          }
-        })
-        .then(res => res.json())
-        .then(data => {
-          logger.info(data)
         })
       }
       

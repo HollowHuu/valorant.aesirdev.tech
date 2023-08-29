@@ -77,11 +77,21 @@ export default async function handler(
 
         let account = await (await Account).findOne(query, options)
         if(account?.tokens) {
+
+            // Get puuid from API
+            let data = await fetch('https://auth.riotgames.com/userinfo', {
+                headers: {
+                    'Authorization': `Bearer ${account.tokens.idToken}`,
+                }
+            })
+
+            let user = await data.json()
+            
+            console.log(data.statusText)
+
             res.status(200).send({
                 success: true,
-                refreshToken: account.tokens.refreshToken,
-                accessToken: account.tokens.accessToken,
-                idToken: account.tokens.idToken,
+                // puuid: user.body.sub
             })
         }
         else {
