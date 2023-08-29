@@ -8,7 +8,7 @@ import { authOptions } from "../auth/[...nextauth]";
 const clientID = process.env.RIOT_CLIENT_ID
 
 const baseURL = process.env.NEXTAUTH_URL
-const appCallbackURL = `${baseURL}/api/oauth/callback`
+const appCallbackURL = `${baseURL}api/oauth/callback`
 
 const provider = "https://auth.riotgames.com"
 const authorizeURL = `${provider}/authorize`
