@@ -33,9 +33,9 @@ export default function Settings() {
     axios.get('/api/oauth/authorize')
     .then(function (response) {
       logger.info({response})
-      window.alert('Test')
+      window.alert(response.data.link)
       // Redirect user to oauth link
-      window.location.href = response.data.url
+      window.location.href = response.data.link
     })
   }
 
