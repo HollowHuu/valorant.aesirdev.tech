@@ -32,7 +32,7 @@ export default async function handler(
     let accessCode = req.body.code;
     accessCode = decodeURI(accessCode)
 
-    console.log({accessCode, code: req.body.code})
+    console.log({accessCode, body: req.body})
 
     if(accessCode == undefined || accessCode == null) return res.status(400).send({
         success: false,
