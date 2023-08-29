@@ -3,17 +3,13 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import axios from 'axios';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
-import { URLPattern } from "next/server";
+import { useSearchParams } from 'next/navigation'
 
 const clientSecret = process.env.RIOT_CLIENT_SECRET
-
 const clientID = process.env.RIOT_CLIENT_ID
-
 const baseURL = process.env.NEXTAUTH_URL
 const appCallbackURL = `${baseURL}api/oauth/callback`
-
 const provider = "https://auth.riotgames.com"
-const authorizeURL = `${provider}/authorize`
 const tokenURL = `${provider}/token`
 
 export default async function handler(
@@ -29,10 +25,14 @@ export default async function handler(
         return
     }
     
-    let accessCode = req.body.code;
-    accessCode = decodeURI(accessCode)
+    const searchParams = useSearchParams();
+    const code = searchParams.get('code');
 
-    console.log({accessCode, body: req.body})
+
+    let accessCode = req.body.code;
+    if (code) accessCode = decodeURI(code);    
+
+    console.log({accessCode, code: code})
 
     if(accessCode == undefined || accessCode == null) return res.status(400).send({
         success: false,
