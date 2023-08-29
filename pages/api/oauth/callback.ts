@@ -32,6 +32,13 @@ export default async function handler(
     let accessCode = req.body.code;
     accessCode = decodeURI(accessCode)
 
+    console.log({accessCode, code: req.body.code})
+
+    if(accessCode == undefined || accessCode == null) return res.status(400).send({
+        success: false,
+        error: "Bad request"
+    })
+
     axios.post(tokenURL, {
         auth: {
             user: clientID,
@@ -48,7 +55,7 @@ export default async function handler(
             error: response.data.error
         })
         const data = JSON.parse(response.data)
-        console.log(data)
+        console.log({data})
     }).catch((error) => {
         console.log(error)
         return res.status(500).send({
