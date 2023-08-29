@@ -25,6 +25,24 @@ export default function Settings() {
   
   const { theme, setTheme } = useTheme();
 
+  // functions
+  function connectAccount() {
+    // Using oauth to connect valorant account
+
+    // Send request to backend to get oauth link
+    axios.get('/api/oauth/authorize')
+    .then(function (response) {
+      logger.info({response})
+      // Redirect user to oauth link
+      window.location.href = response.data.url
+    })
+  }
+
+  function disconnectAccount() {
+    // To be implemented
+    alert("Not implemented yet.")
+  }
+
   // useEffect
   useEffect(() => {
     if (status === 'loading') return
@@ -39,6 +57,9 @@ export default function Settings() {
         }
       })
       console.log(valorant)
+
+
+      // Valorant logic
       if (valorant) {
         // If valorant account is found, display it
 
@@ -47,50 +68,13 @@ export default function Settings() {
         // Make button to remove valorant account
         document.getElementById("val-b")!.innerHTML = "Remove Valorant Account"
         document.getElementById("val-b")!.className = "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex flex-col items-center"
-        document.getElementById("val-b")!.onclick = function() {
-          // Remove valorant account from DB
-          fetch('/api/user/verify', {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-
-          }).catch((error) => {
-            console.error('Error:', error);
-          }
-          ).then((response) => {
-            console.log(response)
-          }
-          )
-          window.location.reload()
-        }
+        document.getElementById("val-b")!.onclick = () => disconnectAccount();
       } else {
         // If valorant account is not found, display a message
         document.getElementById("val")!.innerHTML = "No Valorant account found."
         document.getElementById("val-b")!.innerHTML = "Add Valorant Account"
         document.getElementById("val-b")!.className = "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex flex-col items-center"
-        document.getElementById("val-b")!.onclick = function() {
-
-
-          let val = prompt("Please enter your Valorant username and tagline (ex. HollowHuu#6969):")
-          if (val) {
-            axios.post('/api/user/verify', {
-              valorant: val,
-              session: session
-            })
-            .catch(function (error) {
-              logger.error({error})
-              // Alert user that something went wrong
-              alert("Something went wrong. Please try again.")
-            });
-          }
-          
-          // Reload page after 1 sec
-          setTimeout(function() {
-            window.location.reload()
-          }
-          , 1000)
-        }
+        document.getElementById("val-b")!.onclick = () => connectAccount();
       }
 
     }
