@@ -25,12 +25,11 @@ export default async function handler(
         return
     }
     
-    const searchParams = useSearchParams();
-    const code = searchParams.get('code');
+    const { code } = req.query;
 
 
     let accessCode = req.body.code;
-    if (code) accessCode = decodeURI(code);    
+    if (code && typeof code == "string") accessCode = decodeURI(code);    
 
     console.log({accessCode, code: code})
 
