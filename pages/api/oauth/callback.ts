@@ -73,7 +73,7 @@ export default async function handler(
         const tokens = {
             refreshToken : data.refresh_token,
             accessToken : data.access_token,
-            idToken : data.id_token,
+            // Removed id_token because it's not needed
         }
 
         clientPromise.then((client) => client.db().collection('accounts')).then(async (Account) => {
@@ -95,33 +95,4 @@ export default async function handler(
 
     })
     
-
-    /*
-    // Axios attempt NOT WORKING
-    axios.post(tokenURL, {
-        Authorization: {
-            user: clientID,
-            pass: clientSecret
-        },
-        FormData: {
-            grant_type: "authorization_code",
-            code: accessCode,
-            redirect_uri: appCallbackURL
-        }
-    }).then((response) => {
-        const data = JSON.parse(response.data)
-        if(response.status != 200) return res.status(500).send({
-            success: false,
-            error: data.error
-        })
-        
-        console.log({data})
-    }).catch((error) => {
-        console.log(error.response.data.error)
-        return res.status(500).send({
-            success: false,
-            error: error.response.data.error
-        })
-    })
-    */
 }

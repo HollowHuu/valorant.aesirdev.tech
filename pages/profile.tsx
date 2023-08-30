@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import pino from 'pino'
-import request from 'request'
+import axios from 'axios'
 import { useTheme } from 'next-themes'
 // next-auth and react imports
 import { signIn, signOut, useSession } from 'next-auth/react'
@@ -30,6 +30,33 @@ export default function Profile() {
   // Theme
   const { theme, setTheme } = useTheme();
 
+  function getPuuid() {
+    axios.get('/api/user/verify').then(({data: body}) => {
+      let bodyJSON = body
+      logger.info({bodyJSON})
+      if (body.success == true) {
+        setValorant(bodyJSON.puuid)
+      }
+    }).catch((err) => {
+      logger.error({err})
+      if (err.response.status == 401) {
+        refreshTokens()
+      }
+    })
+  }
+
+  function refreshTokens() {
+    axios.get('/api/oauth/refresh').then(({data: body}) => {
+      console.log('Running refreshTokens()')
+      let bodyJSON = body
+      if (bodyJSON.success == true) {
+        getPuuid()
+      } else {
+        window.alert("An error occoured.")
+      }
+    })
+  }
+
   // useEffect
   useEffect(() => {
     setMounted(true);
@@ -48,11 +75,9 @@ export default function Profile() {
         })
       }
 
+      
       if(valorant != "") {
-        // Display profile banner
-        fetch('https://api.riotgames.com/riot/accounts/me', {
-          
-        })
+        // Set up back end to read internal API  
       }
       
     }

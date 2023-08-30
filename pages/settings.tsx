@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import pino from 'pino'
 import axios from 'axios'
-
 // next-auth and react imports
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useTheme } from 'next-themes'
@@ -30,12 +29,11 @@ export default function Settings() {
     // Using oauth to connect valorant account
 
     // Send request to backend to get oauth link
-    axios.get('/api/oauth/authorize')
-    .then(function (response) {
-      logger.info({response})
-      window.alert(response.data.link)
+    axios.get('/api/oauth/authorize').then(({data: body}) => {
+      logger.info({body})
+      window.alert(body.link)
       // Redirect user to oauth link
-      window.location.href = response.data.link
+      window.location.href = body.link
     })
   }
 
@@ -44,20 +42,43 @@ export default function Settings() {
     alert("Not implemented yet.")
   }
 
+  function getPuuid() {
+    axios.get('/api/user/verify').then(({data: body}) => {
+      let bodyJSON = body
+      logger.info({bodyJSON})
+      if (body.success == true) {
+        setValorant(bodyJSON.puuid)
+      }
+    }).catch((err) => {
+      logger.error({err})
+      if (err.response.status == 401) {
+        refreshTokens()
+      }
+    })
+  }
+
+  function refreshTokens() {
+    axios.get('/api/oauth/refresh').then(({data: body}) => {
+      console.log('Running refreshTokens()')
+      let bodyJSON = body
+      if (bodyJSON.success == true) {
+        getPuuid()
+      } else {
+        window.alert("An error occoured.")
+      }
+    })
+  }
+
   // useEffect
   useEffect(() => {
     if (status === 'loading') return
 
     if (session && status === 'authenticated') {
       // Check DB for user valorant account
-      axios.get('/api/user/verify')
-      .then(function (response) {
-        logger.info({response})
-        if (response.data.success == true) {
-          setValorant(response.data.puuid)
-        }
-      })
-      console.log(valorant)
+      
+      if(!valorant) {
+        getPuuid()
+      }
 
 
       // Valorant logic

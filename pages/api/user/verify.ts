@@ -1,6 +1,6 @@
 import clientPromise from "@/lib/mongodb"
 import type { NextApiRequest, NextApiResponse } from "next"
-import axios from 'axios';
+import request from 'request';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 
@@ -28,22 +28,34 @@ export default async function handler(
         if(account?.tokens) {
 
             // Get puuid from API
-            let data = await fetch('https://auth.riotgames.com/userinfo', {
+            await request.get({
+                uri: 'https://europe.api.riotgames.com/riot/account/v1/accounts/me',
                 headers: {
                     Authorization: `Bearer ${account.tokens.accessToken}`
                 }
+            }, function (error, response, body) {
+                if(error) {
+                    console.log({error})
+                    return res.status(500).send({
+                        success: false,
+                        error: error
+                    })
+                }
+                // const data = JSON.parse(body)
+                if(response.statusCode != 200) return res.status(401).send({
+                    success: false,
+                    error: `Riot: ${response.statusMessage}`
+                })
+
+                let user = JSON.parse(body)
+                
+                console.log({body})
+                res.status(200).send({
+                    success: true,
+                    puuid: user.puuid
+                })
             })
 
-            let user = await data.json()
-            
-            console.log({status: data.statusText, user})
-
-            if(data.status != 200) res.status(401).send({
-                success: false,
-                error: `Riot Error: ${data.statusText}`
-            })
-
-            // Get puuid from API
             
         }
         else {
@@ -53,11 +65,6 @@ export default async function handler(
             })
         }
     }
-
-    else if(req.method === 'DELETE') {
-        // Delete valorant account from DB and return success
-    }
-
     else {
         res.status(405).send({
             success: false,
