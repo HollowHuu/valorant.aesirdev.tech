@@ -16,58 +16,7 @@ export default async function handler(
         })
         return
     }  
-    if(req.method === 'POST'){
-        
-        
-       
-
-        const [ username, tag ] = req.body.valorant.split('#')
-
-        // Check if Valorant account exists on their API
-        let data = await axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${username}/${tag}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': process.env.HDEV_API_KEY,
-            }
-        })
-
-        if(data.status == 200) {
-            // Add valorant account to DB and return success
-            let Account = clientPromise.then((client) => client.db().collection('accounts'));
-            
-            //Check if they already have a puuid in the DB
-            const query = { providerAccountId: session.user.id }
-            const options = {
-                projection: { _id: 0 }
-            }
-            let account = await (await Account).findOne(query, options)
-            console.log(session.user.id)
-            if(account?.puuid) {
-                // Replace the puuid
-                
-            } else {
-                // Add the puuid
-                console.log(data.data.data.puuid)
-                await (await Account).findOneAndUpdate({ providerAccountId: session.user.id }, { $set: { puuid: data.data.data.puuid } })
-            }
-
-            res.status(200).send({
-                success: true,
-            })
-            
-
-        }
-        else {
-            // Return error
-            res.status(400).send({
-                success: false,
-                error: "Valorant account not found"
-            })
-        }
-
-
-    }
-    else if(req.method === 'GET') {
+    if(req.method === 'GET') {
         // Get valorant account from DB and return success
         let Account = clientPromise.then((client) => client.db().collection('accounts'));
         const query = { providerAccountId: session.user.id }
@@ -81,24 +30,21 @@ export default async function handler(
             // Get puuid from API
             let data = await fetch('https://auth.riotgames.com/userinfo', {
                 headers: {
-                    'Authorization': `Bearer ${account.tokens.idToken}`,
+                    Authorization: `Bearer ${account.tokens.accessToken}`
                 }
             })
 
             let user = await data.json()
             
-            
-            if(data.status != 200) return res.status(500).send({
+            console.log({status: data.statusText, user})
+
+            if(data.status != 200) res.status(401).send({
                 success: false,
-                error: data.statusText
+                error: `Riot Error: ${data.statusText}`
             })
 
-            console.log({user: user.body})
-
-            res.status(200).send({
-                success: true,
-                puuid: user.body.sub
-            })
+            // Get puuid from API
+            
         }
         else {
             res.status(201).send({
@@ -110,11 +56,6 @@ export default async function handler(
 
     else if(req.method === 'DELETE') {
         // Delete valorant account from DB and return success
-        let Account = clientPromise.then((client) => client.db().collection('accounts'));
-        await (await Account).findOneAndUpdate({ providerAccountId: session.user.id }, { $unset: { puuid: "" } })
-        res.status(200).send({
-            success: true,
-        })
     }
 
     else {

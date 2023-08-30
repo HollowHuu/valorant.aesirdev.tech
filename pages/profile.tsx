@@ -34,8 +34,6 @@ export default function Profile() {
   useEffect(() => {
     setMounted(true);
 
-    
-
     if (status === 'loading') return
     if (session && status === 'authenticated') {
       // Check DB for Valorant tokens
@@ -49,10 +47,17 @@ export default function Profile() {
           }
         })
       }
+
+      if(valorant != "") {
+        // Display profile banner
+        fetch('https://api.riotgames.com/riot/accounts/me', {
+          
+        })
+      }
       
     }
     
-    
+
 
   }, [session, status, valorant, rankImage, banner])
 

@@ -89,6 +89,24 @@ export default async function handler(
             }
         })
         
+
+        // Testing the accessToken
+        // Get puuid from API
+        request.get('https://auth.riotgames.com/userinfo', {
+            headers: {
+                "Authorization": `${tokens.accessToken}`
+            }
+        }, function (error, response, body) {
+            if(error) {
+                console.log({error})
+                return
+            }
+            if(response.statusCode != 200) return console.log(`Riot Error: ${response.statusMessage}`)
+            const data = JSON.parse(body)
+            console.log({data})
+        })
+
+
         // Return user to the homepage after redirecting to the callback URL
         res.redirect('/settings')
 
