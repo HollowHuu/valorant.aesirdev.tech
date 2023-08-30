@@ -92,7 +92,7 @@ export default async function handler(
 
         // Testing the accessToken
         // Get puuid from API
-        request.get('https://auth.riotgames.com/userinfo', {
+        request.get('https://europe.api.riotgames.com/riot/account/v1/accounts/me', {
             headers: {
                 "Authorization": `${tokens.accessToken}`
             }
