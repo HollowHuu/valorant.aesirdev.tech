@@ -35,4 +35,4 @@ yarn-error.log*
 next-env.d.ts
 
 # API Test
-/pages/api/test
+# /pages/api/test

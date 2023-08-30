@@ -88,23 +88,6 @@ export default async function handler(
                 await (await Account).insertOne({ providerAccountId: session.user.id, tokens: tokens })
             }
         })
-        
-
-        // Testing the accessToken
-        // Get puuid from API
-        request.get('https://europe.api.riotgames.com/riot/account/v1/accounts/me', {
-            headers: {
-                "Authorization": `${tokens.accessToken}`
-            }
-        }, function (error, response, body) {
-            if(error) {
-                console.log({error})
-                return
-            }
-            if(response.statusCode != 200) return console.log(`Riot Error: ${response.statusMessage}`)
-            const data = JSON.parse(body)
-            console.log({data})
-        })
 
 
         // Return user to the homepage after redirecting to the callback URL
