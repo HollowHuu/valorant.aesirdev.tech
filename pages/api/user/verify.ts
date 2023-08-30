@@ -87,11 +87,17 @@ export default async function handler(
 
             let user = await data.json()
             
-            console.log(data.statusText)
+            
+            if(data.status != 200) return res.status(500).send({
+                success: false,
+                error: data.statusText
+            })
+
+            console.log({user: user.body})
 
             res.status(200).send({
                 success: true,
-                // puuid: user.body.sub
+                puuid: user.body.sub
             })
         }
         else {
