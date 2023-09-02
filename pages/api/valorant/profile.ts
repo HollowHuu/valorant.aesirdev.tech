@@ -5,65 +5,11 @@ import axios from 'axios';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 import pino from 'pino'
-import { request } from "http";
+import request from 'request';
 
 const logger = pino()
 
-// Checking validity of tokens and returns puuid if valid
-function verify(): boolean {
-    axios.get('/api/user/verify').then(({data: body}) => {
-        bodyJSON = body
-        logger.info({bodyJSON})
-    })
-}
-
-function getPuuid(): {puuid: string} {
-    let bodyJSON: {
-        success: boolean,
-        puuid: string
-    } = {
-        success: false,
-        puuid: ""
-    }
-
-
-
-    axios.get('/api/user/verify').then(({data: body}) => {
-        bodyJSON = body
-        logger.info({bodyJSON})
-    }).catch((err) => {
-        logger.error({err})
-        if (err.response.status == 401) {
-            if(refreshTokens()) {
-                getPuuid()
-            }
-        }
-    })
-    if (bodyJSON.success == true) {
-        return {
-            puuid: bodyJSON.puuid,
-        }
-    }
-}
-
-function refreshTokens(): boolean {
-    let bodyJSON: {
-        success: boolean,
-    } = {
-        success: false
-    }
-
-    axios.get('/api/oauth/refresh').then(({data: body}) => {
-        console.log('Running refreshTokens()')
-        let bodyJSON = body
-    })
-
-    if (bodyJSON.success == true) {
-        return true;
-    } else {
-        return false;
-    }
-}
+const baseURL = process.env.NEXTAUTH_URL
 
 export default async function handler(
   req: NextApiRequest,
@@ -79,8 +25,21 @@ export default async function handler(
     // }
     if(req.method === 'GET') {  
 
-        // Validate tokens
-        let puuid = getPuuid()
+        // use /api/user/verify to check if user's account is linked
+        // if not, return error
+
+        const verify = () => {
+            request.get({
+                url: `${baseURL}/api/user/verify`,
+            }, function (error, response, body) {
+                /*
+                    Response body:
+                    success: boolean
+                    puuid?: string
+                    error?: string
+                */
+            })
+        }
 
 
         // Get valorant account from DB and return success

@@ -4,6 +4,11 @@ import request from 'request';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 
+/*
+    This API endpoint is used to verify if a user has a valorant account linked to their account.
+    It returns the puuid of the user's valorant account if it is linked, or an error if it is not.
+*/
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
