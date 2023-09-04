@@ -48,6 +48,12 @@ export default function Settings() {
       logger.info({bodyJSON})
       if (body.success == true) {
         setValorant(bodyJSON.puuid)
+        
+        // Get valorant banner
+        axios.get('/api/shard/playercard').then(({data: body}) => {
+          let bodyJSON = body
+          logger.info({bodyJSON})
+        })
       }
     }).catch((err) => {
       logger.error({err})
