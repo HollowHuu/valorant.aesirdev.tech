@@ -70,6 +70,9 @@ export default async function handler(
                     error: error
                 })
             }
+
+            console.log({body})
+
             if(response.statusCode != 200) return res.status(401).send({
                 success: false,
                 error: `Riot: ${response.statusMessage}`
