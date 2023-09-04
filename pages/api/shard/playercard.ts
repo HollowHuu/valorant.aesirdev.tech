@@ -37,18 +37,18 @@ export default async function handler(
         if(!account?.tokens) {
             return res.status(400).send({
                 success: false,
-                error: "Bad request"
+                error: "Missing tokens"
             })
         }
 
         const accessToken = account.tokens.accessToken
 
 
-        const puuid = req.query.puuid || req.query.PUUID
+        const puuid = req.headers.puuid || req.query.puuid
         if(!puuid) {
             return res.status(400).send({
                 success: false,
-                error: "Bad request"
+                error: "Missing puuid"
             })
         }
 
