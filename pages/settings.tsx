@@ -50,9 +50,13 @@ export default function Settings() {
         setValorant(bodyJSON.puuid)
         
         // Get valorant banner
-        axios.get('/api/shard/playercard').then(({data: body}) => {
-          let bodyJSON = body
-          logger.info({bodyJSON})
+        axios.get('/api/shard/playercard', {
+          headers: {
+            'puuid': bodyJSON.puuid
+          }
+        }).then(({data: body}) => {
+          let newBody = body
+          logger.info({newBody})
         })
       }
     }).catch((err) => {
