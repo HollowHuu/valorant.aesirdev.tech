@@ -26,15 +26,15 @@ export default async function handler(
         // The same with the access token
 
 
-        // Get both from DB
+        // Get accessToken from DB
         const Accounts = clientPromise.then((client) => client.db().collection('accounts'));
         const query = { providerAccountId: session.user.id }
         const options = {
             projection: { _id: 0 }
         }
         let account = await (await Accounts).findOne(query, options)
-
         if(!account?.tokens) {
+            console.log("Missing tokens")
             return res.status(400).send({
                 success: false,
                 error: "Missing tokens"
@@ -44,8 +44,9 @@ export default async function handler(
         const accessToken = account.tokens.accessToken
 
 
-        const puuid = req.headers.puuid || req.query.puuid
+        const puuid = req.headers['puuid'] || req.query.puuid
         if(!puuid) {
+            console.log("Missing puuid")
             return res.status(400).send({
                 success: false,
                 error: "Missing puuid"
