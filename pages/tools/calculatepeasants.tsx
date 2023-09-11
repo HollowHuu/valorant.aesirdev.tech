@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react';
 
-const peasants = (megatons: number, weight: number): {
+const peasants = (tonnes: number, weight: number): {
     distance: number,
     velocity: number,
     peasants: number,
 } => {
-    const joules = megatons * 4.184e+15;
+    const joules = tonnes * 1e+9;
     const velocity = Math.sqrt(joules/(0.5*weight))/60/60
     // velocity == mi/s the weapon has to travel
 
@@ -24,24 +24,24 @@ const peasants = (megatons: number, weight: number): {
 
 
 export default function CalculatePeasants() {
-    const [megatons, setMegatons] = useState(0)
+    const [tonnes, setTonnes] = useState(0)
     const [weight, setWeight] = useState(0)
 
     const [sacrifices, setSacrifices] = useState(0)
 
     useEffect(() => {
-        if(megatons > 0 && weight > 0) {
-            const res = peasants(megatons, weight)
+        if(tonnes > 0 && weight > 0) {
+            const res = peasants(tonnes, weight)
             setSacrifices(res.peasants)
         }
-    }, [megatons, weight])
+    }, [tonnes, weight])
     
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
         <div className='flex flex-col min-h-[50%] justify-between p-24'>
             {/* Here we calculate the amount of peasants we need to match a specific ttnt */}
         
-            <input type="number" onChange={(e) => setMegatons(e.target.valueAsNumber)} />
+            <input type="number" onChange={(e) => setTonnes(e.target.valueAsNumber)} />
             <input type="number" onChange={(e) => setWeight(e.target.valueAsNumber)} />
 
             <p>{Math.round(sacrifices)}</p>
