@@ -8,6 +8,28 @@ import { authOptions } from "../auth/[...nextauth]";
     This API endpoint is used to get a user's banner card through Valorant's internal API.
 */
 
+const authCookies = async () => {
+    request.post({
+        uri: 'https://auth.riotgames.com/api/v1/authorization',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            client_id: "play-valorant-web-prod",
+            nonce: "1",
+            redirect_uri: "https://playvalorant.com/opt_in",
+            response_type: "token id_token",
+            scope: "account openid",
+        })
+    }, (error, res, body) => {
+        if(error) {
+            console.error(error)
+            return;
+        }
+        console.log({statusCode: res.statusCode, statusMessage: res.statusMessage, body})
+    })
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -25,6 +47,7 @@ export default async function handler(
         // We assume that the PUUID is already verified and valid
         // The same with the access token
 
+        authCookies();
 
         // Get accessToken from DB
         const Accounts = clientPromise.then((client) => client.db().collection('accounts'));
