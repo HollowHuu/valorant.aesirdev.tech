@@ -28,11 +28,13 @@ export default function CalculatePeasants() {
     const [weight, setWeight] = useState(0)
 
     const [sacrifices, setSacrifices] = useState(0)
+    const [miles, setMiles] = useState(0)
 
     useEffect(() => {
         if(tonnes > 0 && weight > 0) {
             const res = peasants(tonnes, weight)
             setSacrifices(res.peasants)
+            setMiles(res.distance)
         }
     }, [tonnes, weight])
     
@@ -45,6 +47,7 @@ export default function CalculatePeasants() {
             <input type="number" onChange={(e) => setWeight(e.target.valueAsNumber)} />
 
             <p>{Math.round(sacrifices)}</p>
+            <p>{miles}</p>
         </div>
 
 
