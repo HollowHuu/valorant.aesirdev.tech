@@ -30,32 +30,6 @@ export default function Profile() {
   // Theme
   const { theme, setTheme } = useTheme();
 
-  function getPuuid() {
-    axios.get('/api/user/verify').then(({data: body}) => {
-      let bodyJSON = body
-      logger.info({bodyJSON})
-      if (body.success == true) {
-        setValorant(bodyJSON.puuid)
-      }
-    }).catch((err) => {
-      logger.error({err})
-      if (err.response.status == 401) {
-        refreshTokens()
-      }
-    })
-  }
-
-  function refreshTokens() {
-    axios.get('/api/oauth/refresh').then(({data: body}) => {
-      console.log('Running refreshTokens()')
-      let bodyJSON = body
-      if (bodyJSON.success == true) {
-        getPuuid()
-      } else {
-        window.alert("An error occoured.")
-      }
-    })
-  }
 
   // useEffect
   useEffect(() => {
@@ -65,26 +39,18 @@ export default function Profile() {
     if (session && status === 'authenticated') {
       // Check DB for Valorant tokens
       if(valorant == "") {
-        fetch('/api/user/verify').then(res => res.json()).then(data => {
-          if(data.error) {
-            console.log(data.error)
-          } else {
-            console.log(data)
-            setValorant(data.puuid)
-          }
-        })
-      }
 
-      
-      if(valorant != "") {
-        // Set up back end to read internal API  
+        // Get Valorant Banner from /api/valorant/profile
+        axios.get('/api/valorant/profile').then(res => {
+          console.log(res.data)
+          setBanner(res.data.card)
+          setValorant(res.data.puuid)
+        })
       }
       
     }
-    
 
-
-  }, [session, status, valorant, rankImage, banner])
+  }, [session, status, valorant, rankImage])
 
   if(!mounted) return null;
 

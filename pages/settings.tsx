@@ -26,15 +26,24 @@ export default function Settings() {
 
   // functions
   function connectAccount() {
-    // Using oauth to connect valorant account
+      // use HDEV API to get puuid
 
-    // Send request to backend to get oauth link
-    axios.get('/api/oauth/authorize').then(({data: body}) => {
-      logger.info({body})
-      window.alert(body.link)
-      // Redirect user to oauth link
-      window.location.href = body.link
-    })
+      // Get the username and tagline from the user
+      const username = prompt("Please enter your Valorant username and tagline (e.g. HDEV#0001)")
+      if (username == null) {
+        return
+      }
+      // Split the username and tagline
+      const usernameSplit = username.split("#")
+
+      // Post the username and tagline to the API
+      axios.post('api/valorant/setprofile', {
+        // Send the username and tagline
+        username: usernameSplit[0],
+        tagline: usernameSplit[1]
+      })
+
+      // Reload the page
   }
 
   function disconnectAccount() {
@@ -42,54 +51,23 @@ export default function Settings() {
     alert("Not implemented yet.")
   }
 
-  function getPuuid() {
-    axios.get('/api/user/verify').then(({data: body}) => {
-      let bodyJSON = body
-      logger.info({bodyJSON})
-      if (body.success == true) {
-        setValorant(bodyJSON.puuid)
-        
-        // Get valorant banner
-        axios.get('/api/shard/playercard', {
-          headers: {
-            'puuid': bodyJSON.puuid
-          }
-        }).then(({data: body}) => {
-          let newBody = body
-          logger.info({newBody})
-        })
-      }
-    }).catch((err) => {
-      logger.error({err})
-      if (err.response.status == 401) {
-        refreshTokens()
-      }
-    })
-  }
-
-  function refreshTokens() {
-    axios.get('/api/oauth/refresh').then(({data: body}) => {
-      console.log('Running refreshTokens()')
-      let bodyJSON = body
-      if (bodyJSON.success == true) {
-        getPuuid()
-      } else {
-        window.alert("An error occoured.")
-      }
-    })
-  }
 
   // useEffect
   useEffect(() => {
     if (status === 'loading') return
 
     if (session && status === 'authenticated') {
-      // Check DB for user valorant account
-      
-      if(!valorant) {
-        getPuuid()
-      }
 
+      // Check DB for user valorant account
+      if(valorant == "") {
+        // Get Valorant from /api/valorant/profile
+        axios.get('/api/valorant/profile').then(res => {
+          console.log({res})
+          setValorant(res.data.puuid)
+        }).catch(err => {
+          console.log({err})
+        })
+      } 
 
       // Valorant logic
       if (valorant) {
